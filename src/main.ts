@@ -1,1 +1,3 @@
-console.log("Hello, Alaas Poc!");
+import { run } from './chatbot';
+
+run()
