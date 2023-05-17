@@ -1,3 +1,3 @@
-import { run } from './chatbot';
+import { startChatBot } from './chatbot';
 
-run()
+startChatBot()
