@@ -1,0 +1,16 @@
+{
+  "name": "alaas-poc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsnd --exit-child --inspect --transpile-only --ignore-watch node_modules --respawn src/main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.4"
+  }
+}
