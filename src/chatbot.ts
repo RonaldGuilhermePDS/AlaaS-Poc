@@ -28,7 +28,7 @@ async function startChatBot () {
   ]
 
   /* Modelo do Agente */
-  const agentModel = new OpenAI({ openAIApiKey: envs.openApiKey, temperature: 0 });
+  const agentModel = new OpenAI({ openAIApiKey: envs.openApiKey, modelName: "gpt-3.5-turbo", temperature: 0 });
   
   /* Inicia o Agente */
   const executor = await initializeAgentExecutorWithOptions(tools, agentModel, {
@@ -42,6 +42,13 @@ async function startChatBot () {
         resolve(answer);
       });
     });
+
+    /* Verifica se é comando ou mensagem */
+    if (message[0] === "/") {
+      const agentResponse = await executor.call({ input: message });
+
+      console.log("Suporte: ", agentResponse.output);
+    }
 
     /* Prompt Inicial */
     const initialPrompt = `
