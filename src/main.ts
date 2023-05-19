@@ -1,3 +1,3 @@
 import { startChatBot } from './chatbot';
 
-startChatBot()
+startChatBot();
