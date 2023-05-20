@@ -18,10 +18,10 @@ async function startChatBot () {
   /* Core do ChatBot */
   const chat = new ChatOpenAI({
     openAIApiKey: envs.openApiKey,
-    modelName: "gpt-3.5-turbo",
+    modelName: envs.modelName,
     temperature: 0.8,
     streaming: true
-  })
+  });
 
   /* Ferramentas do Agente */
   const tools = [
@@ -34,7 +34,11 @@ async function startChatBot () {
   ]
 
   /* Modelo do Agente */
-  const agentModel = new OpenAI({ openAIApiKey: envs.openApiKey, modelName: "gpt-3.5-turbo", temperature: 0 });
+  const agentModel = new OpenAI({
+    openAIApiKey: envs.openApiKey,
+    modelName: envs.modelName,
+    temperature: 0
+  });
   
   /* Inicia o Agente */
   const executor = await initializeAgentExecutorWithOptions(tools, agentModel, {
