@@ -15,7 +15,13 @@ const rl = readline.createInterface({
 
 /* Inicia o ChatBot */
 async function startChatBot () {
-  const chat = new ChatOpenAI({ openAIApiKey: envs.openApiKey, modelName: "gpt-3.5-turbo", temperature: 0.8, streaming: true })
+  /* Core do ChatBot */
+  const chat = new ChatOpenAI({
+    openAIApiKey: envs.openApiKey,
+    modelName: "gpt-3.5-turbo",
+    temperature: 0.8,
+    streaming: true
+  })
 
   /* Ferramentas do Agente */
   const tools = [
@@ -34,7 +40,7 @@ async function startChatBot () {
   const executor = await initializeAgentExecutorWithOptions(tools, agentModel, {
     agentType: "zero-shot-react-description",
   });
-  
+   
   while (true) {
     /* Mensagem do Cliente */
     const message: string = await new Promise(resolve => {
