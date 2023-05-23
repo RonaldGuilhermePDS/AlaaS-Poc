@@ -1,9 +1,13 @@
 import { envs } from './envs';
 
 import { ChatOpenAI } from "langchain/chat_models/openai";
-import { OpenAI } from "langchain/llms/openai";
-import { SystemChatMessage, HumanChatMessage } from "langchain/schema";
-import { initializeAgentExecutorWithOptions } from "langchain/agents";
+import {
+  ChatPromptTemplate,
+  HumanMessagePromptTemplate,
+  SystemMessagePromptTemplate,
+} from "langchain/prompts";
+import { LLMChain } from "langchain/chains";
+import { ZeroShotAgent, AgentExecutor } from "langchain/agents";
 import { DynamicTool } from "langchain/tools";
 
 import readline from 'readline';
@@ -15,65 +19,77 @@ const rl = readline.createInterface({
 
 /* Inicia o ChatBot */
 async function startChatBot () {
-  /* Core do ChatBot */
-  const chat = new ChatOpenAI({
-    openAIApiKey: envs.openApiKey,
-    modelName: envs.modelName,
-    temperature: 0.8,
-    streaming: true
-  });
-
   /* Ferramentas do Agente */
   const tools = [
     new DynamicTool({
       name: "Realizar função",
       description:
         "Chame essa função se for requisitado para realizar função. a entrada deve ser uma string vazia.",
-      func: async () => "Função realizada",
+      func: async () => {
+        return "Função realizada";
+      },
     }),
-  ]
+  ];
 
-  /* Modelo do Agente */
-  const agentModel = new OpenAI({
+  /* Prompt Inicial */
+  const prompt = ZeroShotAgent.createPrompt(tools, {
+    prefix: `
+      Você é uma inteligência artificial que atua no surpote técnico.
+
+      Você tem acesso as seguintes ferramentas:
+    `,
+    suffix: `Começar!`,
+  });
+
+  const chatPrompt = ChatPromptTemplate.fromPromptMessages([
+    new SystemMessagePromptTemplate(prompt),
+    HumanMessagePromptTemplate.fromTemplate(`
+      {input}
+
+      {agent_scratchpad}
+    `),
+  ]);
+
+  /* Core do ChatBot */
+  const chat = new ChatOpenAI({
     openAIApiKey: envs.openApiKey,
     modelName: envs.modelName,
-    temperature: 0
+    temperature: 0,
+    streaming: true,
   });
-  
-  /* Inicia o Agente */
-  const executor = await initializeAgentExecutorWithOptions(tools, agentModel, {
-    agentType: "zero-shot-react-description",
+
+  /* LLM Chain */
+  const llmChain = new LLMChain({
+    prompt: chatPrompt,
+    llm: chat,
   });
-   
+
+  /* Agente */
+  const agent = new ZeroShotAgent({
+    llmChain,
+    allowedTools: tools.map((tool) => tool.name),
+  });
+
+  /* Executor do Agente */
+  const executor = AgentExecutor.fromAgentAndTools({
+    agent,
+    tools,
+    returnIntermediateSteps: true,
+    maxIterations: 1,
+  });
+
   while (true) {
     /* Mensagem do Cliente */
-    const message: string = await new Promise(resolve => {
+    const message = await new Promise(resolve => {
       rl.question('Cliente: ', (answer) => {
         resolve(answer);
       });
     });
 
-    /* Verifica se é comando ou mensagem */
-    if (message[0] === "/") {
-      const agentResponse = await executor.call({ input: message });
-
-      console.log("Suporte: ", agentResponse.output);
-    }
-
-    /* Prompt Inicial */
-    const initialPrompt = `
-      Você é uma inteligência artificial que atua no surpote técnico.
-      Você pode executar tarefas que estão definidas nos seus agents
-      Você tranquiliza o cliente, pedindo para que espere o contato do suporte quando não sabe a solução do problema.
-    `;
+    const response = await executor.run(message)
 
     /* Resposta da AI */
-    const response = await chat.call([
-      new SystemChatMessage(initialPrompt),
-      new HumanChatMessage(message)
-    ]);
-
-    console.log("Suporte: ", response.text);
+    console.log("Suporte: ", response);
   }
 };
 
