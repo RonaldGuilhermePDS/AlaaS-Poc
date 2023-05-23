@@ -7,7 +7,7 @@ import {
   SystemMessagePromptTemplate,
 } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
-import { ZeroShotAgent, AgentExecutor } from "langchain/agents";
+import { ChatAgent, AgentExecutor } from "langchain/agents";
 import { DynamicTool } from "langchain/tools";
 
 import readline from 'readline';
@@ -32,7 +32,7 @@ async function startChatBot () {
   ];
 
   /* Prompt Inicial */
-  const prompt = ZeroShotAgent.createPrompt(tools, {
+  const prompt = ChatAgent.createPrompt(tools, {
     prefix: `
       Você é uma inteligência artificial que atua no surpote técnico.
 
@@ -65,7 +65,7 @@ async function startChatBot () {
   });
 
   /* Agente */
-  const agent = new ZeroShotAgent({
+  const agent = new ChatAgent({
     llmChain,
     allowedTools: tools.map((tool) => tool.name),
   });
@@ -86,7 +86,7 @@ async function startChatBot () {
       });
     });
 
-    const response = await executor.run(message)
+    const { output: response } = await executor.call({ input: message });
 
     /* Resposta da AI */
     console.log("Suporte: ", response);
