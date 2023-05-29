@@ -12,12 +12,12 @@ Um modelo de linguagem é um tipo de modelo de aprendizado de máquina que tem c
 
 Existem vários tipos de modelos de aprendizado de máquina. alguns exemplos são:
 
-<b>Modelos de regressão</b>: usados para prever um valor numérico, como o preço de uma casa com base em suas características.
-<b>Modelos de classificação</b>: usados para classificar dados em categorias diferentes, como identificar se um e-mail é spam ou não.
-<b>Modelos de agrupamento</b>: usados para agrupar dados em grupos semelhantes, como identificar perfis de consumidores com base em seus hábitos de compras.
-<b>Modelos de detecção de anomalias</b>: usados para identificar padrões incomuns em dados, como transações fraudulentas em um cartão de crédito.
-<b>Modelos de recomendação</b>: usados para fazer sugestões personalizadas para os usuários, como recomendar filmes ou músicas com base em suas preferências anteriores.
-<b>Modelos de redes neurais convolucionais<b/>: usados para tarefas de processamento de imagens e reconhecimento de padrões.
+- <b>Modelos de regressão</b>: usados para prever um valor numérico, como o preço de uma casa com base em suas características.
+- <b>Modelos de classificação</b>: usados para classificar dados em categorias diferentes, como identificar se um e-mail é spam ou não.
+- <b>Modelos de agrupamento</b>: usados para agrupar dados em grupos semelhantes, como identificar perfis de consumidores com base em seus hábitos de compras.
+- <b>Modelos de detecção de anomalias</b>: usados para identificar padrões incomuns em dados, como transações fraudulentas em um cartão de crédito.
+- <b>Modelos de recomendação</b>: usados para fazer sugestões personalizadas para os usuários, como recomendar filmes ou músicas com base em suas preferências anteriores.
+- <b>Modelos de redes neurais convolucionais<b/>: usados para tarefas de processamento de imagens e reconhecimento de padrões.
 
 Esses são alguns exemplos de muitos tipos de modelos de aprendizado de máquina disponíveis. Cada tipo de modelo tem sua própria aplicação específica e é escolhido com base na tarefa que precisa ser resolvida.
 
@@ -33,5 +33,5 @@ Quais as funcionalidades da prova de conceito?
 
 O Chatbot implementado nesta PoC é capaz de:
 
-Responder ao cliente como suporte
-Realizar Tarefas de acordo com a problemática do cliente
+- Responder ao cliente como suporte
+- Realizar Tarefas de acordo com a problemática do cliente
