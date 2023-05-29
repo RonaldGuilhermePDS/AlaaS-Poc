@@ -35,3 +35,25 @@ O Chatbot implementado nesta PoC é capaz de:
 
 - Responder ao cliente como suporte
 - Realizar Tarefas de acordo com a problemática do cliente
+
+## Começando
+
+1. Clone o Repository
+```sh
+git clone git@github.com:RonaldGuilhermePDS/AlaaS-Poc.git
+```
+
+2. Crie o arquivo .env
+```sh
+cp .env.example .env
+```
+
+3. Instale os pacotes
+```sh
+npm install
+```
+
+5. Inicie localmente
+```sh
+npm run dev
+```
